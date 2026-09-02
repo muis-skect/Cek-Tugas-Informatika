@@ -66,14 +66,33 @@
         .btn-angle:hover { background-color: #e0b316; }
 
         .motivation { font-size: 0.95rem; font-weight: 800; margin-top: 25px; line-height: 1.4; text-transform: uppercase; }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn-nav {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: 0.3s;
+        }
+        .btn-nav:hover { background: rgba(255, 255, 255, 0.4); }
+
         .footer-note { font-size: 0.7rem; margin-top: 20px; opacity: 0.8; font-weight: 600; }
 
         /* Modal Hasil */
         .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); z-index:999; justify-content:center; align-items:center; }
         .modal-box { background: white; color: #333; width: 85%; max-width: 350px; border-radius: 25px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; }
-        
         .greeting-text { font-size: 1.2rem; font-weight: bold; color: var(--primary-blue); margin-bottom: 5px; text-transform: capitalize; }
-        
         .tugas-container { background: #f9f9f9; padding: 15px; border-radius: 15px; margin-top: 10px; text-align: left; border: 1px solid #eee; max-height: 200px; overflow-y: auto; }
         .btn-tutup { background: var(--primary-blue); color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; cursor: pointer; }
     </style>
@@ -97,6 +116,12 @@
         <div class="motivation">
             KERJAKAN TUGASMU<br>DISIPLIN BELAJAR<br>KUNCI SUKSESMU
         </div>
+
+        <div class="nav-buttons">
+            <a href="data.html" class="btn-nav">📋 Data Tugas</a>
+            <a href="admin.html" class="btn-nav">⚙️ Admin</a>
+        </div>
+
         <div class="footer-note">@COPY BY ABDUL MUIS</div>
     </div>
 
@@ -117,7 +142,6 @@
     </div>
 
     <script>
-        // ID Google Sheet Kamu yang Baru
         const SHEET_ID = '1Dc7quyO0MrpU8lkVEuwG422_9TiIbyRpWPvWyw8bj-M';
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
