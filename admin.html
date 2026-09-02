@@ -3,61 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Admin - Kelola Tugas</title>
+    <title>Panel Admin - Cek Tugas</title>
     <style>
         :root { --primary-blue: #4a76c5; }
-        body { font-family: 'Segoe UI', sans-serif; background: #e9ecef; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 90vh; }
-        .login-card, .admin-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); width: 100%; max-width: 500px; text-align: center; }
-        .admin-card { max-width: 800px; display: none; }
-        h2 { color: var(--primary-blue); margin-bottom: 20px; }
-        input[type="password"] { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-        button { background: var(--primary-blue); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
-        button:hover { background: #3b5fa3; }
-        .btn-sheet { background: #28a745; margin-top: 15px; text-decoration: none; display: inline-block; color: white; padding: 12px 20px; border-radius: 8px; font-weight: bold; }
+        body { font-family: 'Segoe UI', sans-serif; background: #e9ecef; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 90vh; }
+        
+        .login-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); width: 100%; max-width: 400px; text-align: center; margin-top: 50px; }
+        .admin-container { display: none; width: 100%; max-width: 950px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        
+        h2, h3 { color: var(--primary-blue); margin-bottom: 15px; }
+        input[type="password"], .search-box { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        
+        .btn-action { background: var(--primary-blue); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn-action:hover { background: #3b5fa3; }
+        
+        .btn-sheet { background: #28a745; color: white; text-decoration: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; display: inline-block; margin-bottom: 20px; }
         .btn-sheet:hover { background: #218838; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: var(--primary-blue); color: white; }
+        tr:hover { background-color: #f1f1f1; }
+        .nav-link { display: inline-block; margin-bottom: 15px; color: var(--primary-blue); text-decoration: none; font-weight: bold; }
+        
+        .admin-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
+    <!-- Form Login Admin -->
     <div id="loginBox" class="login-card">
         <h2>LOGIN ADMIN</h2>
-        <p>Masukkan Kata Sandi untuk Mengelola Data Tugas</p>
-        <input type="password" id="passInput" placeholder="Masukkan Password...">
-        <button onclick="checkPassword()">MASUK</button>
+        <p>Masukkan Kata Sandi untuk Akses Data & Spreadsheet</p>
+        <input type="password" id="passInput" placeholder="Masukkan Password Admin...">
+        <button class="btn-action" onclick="checkPassword()">MASUK</button>
+        <br><br>
+        <a href="index.html" style="color: #666; text-decoration: none; font-size: 0.85rem;">&larr; Kembali ke Pemindai Scan</a>
     </div>
 
-    <div id="adminPanel" class="admin-card">
-        <h2>PANEL KELOLA DATA TUGAS</h2>
-        <p>Klik tombol di bawah ini untuk membuka dan mengedit Google Sheets Database secara langsung:</p>
+    <!-- Panel Khusus Admin -->
+    <div id="adminPanel" class="admin-container">
+        <a href="index.html" class="nav-link">&larr; Kembali ke Pemindai Scan</a>
         
-        <a href="https://docs.google.com/spreadsheets/d/1Dc7quyO0MrpU8lkVEuwG422_9TiIbyRpWPvWyw8bj-M/edit" target="_blank" class="btn-sheet">
-            📄 Buka Google Sheets Database
-        </a>
-
-        <div style="margin-top: 30px; text-align: left; background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid var(--primary-blue);">
-            <strong>Petunjuk Pengisian Data Tugas:</strong>
-            <ul>
-                <li><strong>Kolom A:</strong> NISN / Kode Barcode</li>
-                <li><strong>Kolom B:</strong> Nama Siswa</li>
-                <li><strong>Kolom C:</strong> Kelas</li>
-                <li><strong>Kolom D:</strong> Daftar Tugas (Gunakan tanda koma <code>,</code> untuk memisahkan tugas)</li>
-            </ul>
+        <div class="admin-header">
+            <div>
+                <h2 style="margin:0;">PANEL ADMIN & DATA TUGAS</h2>
+                <small style="color:#666;">Kelola dan pantau rekap tugas seluruh siswa</small>
+            </div>
+            <a href="https://docs.google.com/spreadsheets/d/1Dc7quyO0MrpU8lkVEuwG422_9TiIbyRpWPvWyw8bj-M/edit" target="_blank" class="btn-sheet">
+                📄 Buka Spreadsheet Database
+            </a>
         </div>
+
+        <input type="text" id="searchInput" class="search-box" onkeyup="filterData()" placeholder="Cari Berdasarkan Nama, NISN, atau Kelas...">
         
-        <br><br>
-        <a href="index.html" style="color: #666; text-decoration: none; font-size: 0.9rem;">&larr; Kembali ke Pemindai Scan</a>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>NISN</th>
+                    <th>Nama Siswa</th>
+                    <th>Kelas</th>
+                    <th>Daftar Tugas</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr><td colspan="5" style="text-align:center;">Memuat data...</td></tr>
+            </tbody>
+        </table>
     </div>
 
     <script>
+        const SHEET_ID = '1Dc7quyO0MrpU8lkVEuwG422_9TiIbyRpWPvWyw8bj-M';
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+
+        let listSiswa = [];
+
         function checkPassword() {
             const pass = document.getElementById('passInput').value;
-            // Password bawaan: admin123
+            // Password default: admin123
             if (pass === 'admin123') {
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
+                loadData();
             } else {
                 alert('Password Salah!');
             }
+        }
+
+        function loadData() {
+            fetch(SHEET_URL)
+                .then(res => res.text())
+                .then(data => {
+                    const json = JSON.parse(data.substr(47).slice(0, -2));
+                    const rows = json.table.rows;
+                    listSiswa = rows.map(r => ({
+                        nisn: r.c[0] ? String(r.c[0].v || r.c[0].f).trim() : "",
+                        nama: r.c[1] ? String(r.c[1].v).trim() : "",
+                        kelas: r.c[2] ? String(r.c[2].v).trim() : "",
+                        tugas: r.c[3] ? String(r.c[3].v).trim() : "-"
+                    }));
+                    renderTable(listSiswa);
+                })
+                .catch(err => {
+                    document.getElementById('tableBody').innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Gagal memuat data dari database.</td></tr>';
+                });
+        }
+
+        function renderTable(data) {
+            let html = "";
+            if (data.length === 0) {
+                html = '<tr><td colspan="5" style="text-align:center;">Data tidak ditemukan.</td></tr>';
+            } else {
+                data.forEach((item, index) => {
+                    html += `<tr>
+                        <td>${index + 1}</td>
+                        <td>${item.nisn}</td>
+                        <td><b>${item.nama}</b></td>
+                        <td>${item.kelas}</td>
+                        <td>${item.tugas}</td>
+                    </tr>`;
+                });
+            }
+            document.getElementById('tableBody').innerHTML = html;
+        }
+
+        function filterData() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = listSiswa.filter(item => 
+                item.nama.toLowerCase().includes(query) ||
+                item.nisn.toLowerCase().includes(query) ||
+                item.kelas.toLowerCase().includes(query)
+            );
+            renderTable(filtered);
         }
     </script>
 </body>
