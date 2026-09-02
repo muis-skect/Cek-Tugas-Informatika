@@ -3,34 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEK NILAI-KU - Online</title>
+    <title>CEK TUGAS-KU - Online</title>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
-        :root { --primary-blue: #4a76c5; --yellow-text: #f0c419; }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #e5e5e5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        :root { 
+            --primary-blue: #4a76c5; 
+            --yellow-text: #f0c419; 
+            --yellow-btn: #f4c430;
+        }
+        body { 
+            margin: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #e5e5e5; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+        }
         
         .app-card { 
-            width: 90%; max-width: 380px; background: var(--primary-blue); border-radius: 45px; 
-            padding: 40px 20px; text-align: center; color: white; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            width: 90%; 
+            max-width: 380px; 
+            background: var(--primary-blue); 
+            border-radius: 45px; 
+            padding: 35px 20px; 
+            text-align: center; 
+            color: white; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
 
-        .logo-img { width: 80px; height: auto; margin-bottom: 10px; }
-        .main-title { font-size: 2.4rem; font-weight: 900; color: var(--yellow-text); margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-        .instruction { font-size: 1.1rem; font-weight: 600; line-height: 1.3; margin-bottom: 30px; }
+        .logo-img { width: 70px; height: auto; margin-bottom: 5px; }
+        .main-title { font-size: 2.2rem; font-weight: 900; color: var(--yellow-text); margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .instruction { font-size: 1rem; font-weight: 700; line-height: 1.3; margin-bottom: 20px; text-transform: uppercase; }
         
-        #reader { width: 260px; height: 260px; background: white; margin: 0 auto; border-radius: 35px; overflow: hidden; border: none !important; }
+        #reader { 
+            width: 260px; 
+            background: white; 
+            margin: 0 auto; 
+            border-radius: 25px; 
+            overflow: hidden; 
+            border: none !important; 
+        }
 
-        .motivation { font-size: 1rem; font-weight: 700; margin-top: 40px; line-height: 1.5; text-transform: uppercase; }
-        .footer-note { font-size: 0.7rem; margin-top: 25px; opacity: 0.7; }
+        .angle-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .btn-angle {
+            background-color: var(--yellow-btn);
+            color: #222;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .btn-angle:hover { background-color: #e0b316; }
+
+        .motivation { font-size: 0.95rem; font-weight: 800; margin-top: 25px; line-height: 1.4; text-transform: uppercase; }
+        .footer-note { font-size: 0.7rem; margin-top: 20px; opacity: 0.8; font-weight: 600; }
 
         /* Modal Hasil */
         .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); z-index:999; justify-content:center; align-items:center; }
         .modal-box { background: white; color: #333; width: 85%; max-width: 350px; border-radius: 25px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; }
         
         .greeting-text { font-size: 1.2rem; font-weight: bold; color: var(--primary-blue); margin-bottom: 5px; text-transform: capitalize; }
-        .sub-greeting { font-size: 0.9rem; color: #666; margin-bottom: 15px; }
         
-        .nilai-container { background: #f9f9f9; padding: 15px; border-radius: 15px; margin-top: 10px; text-align: left; border: 1px solid #eee; }
+        .tugas-container { background: #f9f9f9; padding: 15px; border-radius: 15px; margin-top: 10px; text-align: left; border: 1px solid #eee; max-height: 200px; overflow-y: auto; }
         .btn-tutup { background: var(--primary-blue); color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
@@ -38,13 +82,20 @@
 
     <div class="app-card">
         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgmiw7dx86K2dU7gMnaxZNWh5mTxiVAkelD1v83eFcEsRXtArlgiXQ4p34tveXDFK0uQ0xOt8ge_Gyg_AneM-kFiTB1lSgHdc-oNlrVf9pckhnu0biCCq-FnpSgdU4Lw2N9Ny7f0IZAfPXIUBsdo8sZ7VzrI4I4eP2tOAKn9u2EPWQp3rYu3FdYmkmPAb0/s2100/LOGO%20SINGA%20.png" alt="Logo" class="logo-img">
-        <div class="main-title">CEK NILAI-KU</div>
+        <div class="main-title">CEK TUGAS-KU</div>
         <div class="instruction">SCAN BARCODEMU<br>DISINI YA..</div>
 
         <div id="reader"></div>
 
+        <div class="angle-container">
+            <button class="btn-angle" onclick="setAngle(0)">Angle 1</button>
+            <button class="btn-angle" onclick="setAngle(90)">Angle 2</button>
+            <button class="btn-angle" onclick="setAngle(180)">Angle 3</button>
+            <button class="btn-angle" onclick="setAngle(270)">Angle 4</button>
+        </div>
+
         <div class="motivation">
-            TINGKATKAN GAYA<br>BELAJARMU UNTUK<br>MENINGKATKAN NILAIMU
+            KERJAKAN TUGASMU<br>DISIPLIN BELAJAR<br>KUNCI SUKSESMU
         </div>
         <div class="footer-note">@COPY BY ABDUL MUIS</div>
     </div>
@@ -59,32 +110,33 @@
                 <strong>Kelas:</strong> <span id="res-kelas"></span>
             </div>
 
-            <div class="nilai-container" id="res-nilai-list"></div>
+            <div class="tugas-container" id="res-tugas-list"></div>
             
             <button class="btn-tutup" onclick="closeModal()">TUTUP & SCAN LAGI</button>
         </div>
     </div>
 
     <script>
-        // Database dari Google Sheets Anda
-        const SHEET_ID = '1dwy-d6Vuqa5AfNfiB67FQMlR2Gw87F1Bi4ZGAJw-NnM';
+        // ID Google Sheet Kamu yang Baru
+        const SHEET_ID = '1Dc7quyO0MrpU8lkVEuwG422_9TiIbyRpWPvWyw8bj-M';
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
         let dataSiswaGlobal = [];
+        let isScanningAllowed = true;
 
-        // Load data saat web dibuka
         fetch(SHEET_URL)
             .then(res => res.text())
             .then(data => {
                 const json = JSON.parse(data.substr(47).slice(0, -2));
                 const rows = json.table.rows;
                 dataSiswaGlobal = rows.map(r => ({
-                    nisn: r.c[0]?.v.toString(),
-                    nama: r.c[1]?.v,
-                    kelas: r.c[2]?.v,
-                    nilai: r.c[3]?.v || ""
+                    nisn: r.c[0] ? String(r.c[0].v || r.c[0].f).trim() : "",
+                    nama: r.c[1] ? String(r.c[1].v).trim() : "",
+                    kelas: r.c[2] ? String(r.c[2].v).trim() : "",
+                    tugas: r.c[3] ? String(r.c[3].v).trim() : ""
                 }));
-            });
+            })
+            .catch(err => console.error("Gagal mengambil data dari Google Sheet:", err));
 
         function getGreeting() {
             const hour = new Date().getHours();
@@ -95,32 +147,53 @@
         }
 
         function onScanSuccess(decodedText) {
-            const siswa = dataSiswaGlobal.find(s => s.nisn === decodedText);
+            if (!isScanningAllowed) return;
+
+            const scannedNISN = String(decodedText).trim();
+            const siswa = dataSiswaGlobal.find(s => s.nisn === scannedNISN);
 
             if (siswa) {
+                isScanningAllowed = false;
                 const salam = getGreeting();
                 document.getElementById('greeting').innerText = `${salam},`;
                 document.getElementById('res-nama').innerText = siswa.nama;
                 document.getElementById('res-nisn').innerText = siswa.nisn;
                 document.getElementById('res-kelas').innerText = siswa.kelas;
 
-                // Memproses daftar nilai
-                let listHtml = "<strong>DAFTAR NILAI:</strong><br>";
-                const nilaiArray = siswa.nilai.split(',');
-                nilaiArray.forEach((n, i) => {
-                    listHtml += `<div style="padding: 5px 0; border-bottom: 1px solid #ddd;">${i+1}. ${n.trim()}</div>`;
-                });
+                let listHtml = "<strong>DAFTAR TUGAS:</strong><br>";
+                if (siswa.tugas) {
+                    const tugasArray = siswa.tugas.split(',');
+                    tugasArray.forEach((t, i) => {
+                        listHtml += `<div style="padding: 6px 0; border-bottom: 1px solid #ddd; font-size: 0.9rem;">${i+1}. ${t.trim()}</div>`;
+                    });
+                } else {
+                    listHtml += "<div style='padding: 8px 0; color: #28a745; font-weight: bold;'>Semua tugas sudah selesai!</div>";
+                }
                 
-                document.getElementById('res-nilai-list').innerHTML = listHtml;
+                document.getElementById('res-tugas-list').innerHTML = listHtml;
                 document.getElementById('modalSiswa').style.display = 'flex';
             } else {
-                alert("Maaf, NISN tidak ditemukan di database online.");
+                alert("Maaf, Barcode/NISN tidak ditemukan di database online.");
             }
         }
 
-        function closeModal() { document.getElementById('modalSiswa').style.display = 'none'; }
+        function closeModal() { 
+            document.getElementById('modalSiswa').style.display = 'none'; 
+            setTimeout(() => { isScanningAllowed = true; }, 1000);
+        }
 
-        let scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 220 });
+        function setAngle(degree) {
+            const videoElem = document.querySelector("#reader video");
+            if (videoElem) {
+                videoElem.style.transform = `rotate(${degree}deg)`;
+            }
+        }
+
+        let scanner = new Html5QrcodeScanner("reader", { 
+            fps: 10, 
+            qrbox: { width: 220, height: 150 },
+            experimentalFeatures: { useBarCodeDetectorIfSupported: true }
+        });
         scanner.render(onScanSuccess);
     </script>
 </body>
