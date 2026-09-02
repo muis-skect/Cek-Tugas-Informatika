@@ -109,6 +109,7 @@
             <button class="btn-angle" onclick="setAngle(90)">Angle 2</button>
             <button class="btn-angle" onclick="setAngle(180)">Angle 3</button>
             <button class="btn-angle" onclick="setAngle(270)">Angle 4</button>
+            <button class="btn-angle" style="background-color: #28a745; color: white;" onclick="switchCamera()">📷 Ganti Kamera</button>
         </div>
 
         <div class="motivation">
@@ -144,7 +145,11 @@
 
         let dataSiswaGlobal = [];
         let isScanningAllowed = true;
+        let html5QrCode;
+        let currentCameraIndex = 0;
+        let availableCameras = [];
 
+        // Fetch Data Siswa dari Google Sheets
         fetch(SHEET_URL)
             .then(res => res.text())
             .then(data => {
@@ -181,11 +186,36 @@
                 document.getElementById('res-nisn').innerText = siswa.nisn;
                 document.getElementById('res-kelas').innerText = siswa.kelas;
 
-                let listHtml = "<strong>DAFTAR TUGAS:</strong><br>";
-                if (siswa.tugas) {
+                let listHtml = "<strong>DAFTAR TUGAS:</strong><br><br>";
+                
+                if (siswa.tugas && siswa.tugas.trim() !== "" && siswa.tugas !== "-") {
                     const tugasArray = siswa.tugas.split(',');
+                    
                     tugasArray.forEach((t, i) => {
-                        listHtml += `<div style="padding: 6px 0; border-bottom: 1px solid #ddd; font-size: 0.9rem;">${i+1}. ${t.trim()}</div>`;
+                        const itemTugas = t.trim();
+                        
+                        // Cek jika tugas berbentuk tautan (URL)
+                        if (itemTugas.startsWith("http://") || itemTugas.startsWith("https://")) {
+                            listHtml += `
+                                <div style="margin-bottom: 10px;">
+                                    <a href="${itemTugas}" target="_blank" style="
+                                        display: block;
+                                        background-color: #28a745;
+                                        color: white;
+                                        text-decoration: none;
+                                        padding: 10px 12px;
+                                        border-radius: 10px;
+                                        font-weight: bold;
+                                        font-size: 0.85rem;
+                                        text-align: center;
+                                        box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+                                    ">
+                                        📄 Buka File Tugas ${tugasArray.length > 1 ? (i + 1) : ''} (PDF/Gambar) &rarr;
+                                    </a>
+                                </div>`;
+                        } else {
+                            listHtml += `<div style="padding: 6px 0; border-bottom: 1px solid #ddd; font-size: 0.9rem;">${i+1}. ${itemTugas}</div>`;
+                        }
                     });
                 } else {
                     listHtml += "<div style='padding: 8px 0; color: #28a745; font-weight: bold;'>Semua tugas sudah selesai!</div>";
@@ -210,12 +240,54 @@
             }
         }
 
-        let scanner = new Html5QrcodeScanner("reader", { 
-            fps: 10, 
-            qrbox: { width: 220, height: 150 },
-            experimentalFeatures: { useBarCodeDetectorIfSupported: true }
-        });
-        scanner.render(onScanSuccess);
+        // Pengaturan Kamera Otomatis Kamera Belakang
+        function startScanner() {
+            html5QrCode = new Html5Qrcode("reader");
+
+            Html5Qrcode.getCameras().then(devices => {
+                if (devices && devices.length) {
+                    availableCameras = devices;
+                    
+                    // Prioritaskan kamera belakang
+                    let backCameraIndex = devices.findIndex(cam => 
+                        cam.label.toLowerCase().includes('back') || 
+                        cam.label.toLowerCase().includes('rear') ||
+                        cam.label.toLowerCase().includes('environment')
+                    );
+
+                    currentCameraIndex = backCameraIndex !== -1 ? backCameraIndex : devices.length - 1;
+                    startCamera(availableCameras[currentCameraIndex].id);
+                } else {
+                    alert("Kamera tidak ditemukan di perangkat ini.");
+                }
+            }).catch(err => {
+                console.error("Gagal mengakses kamera:", err);
+            });
+        }
+
+        function startCamera(cameraId) {
+            const config = { 
+                fps: 10, 
+                qrbox: { width: 220, height: 150 },
+                experimentalFeatures: { useBarCodeDetectorIfSupported: true }
+            };
+
+            html5QrCode.start(cameraId, config, onScanSuccess)
+            .catch(err => console.error("Gagal menjalankan kamera:", err));
+        }
+
+        function switchCamera() {
+            if (availableCameras.length > 1) {
+                html5QrCode.stop().then(() => {
+                    currentCameraIndex = (currentCameraIndex + 1) % availableCameras.length;
+                    startCamera(availableCameras[currentCameraIndex].id);
+                }).catch(err => console.error("Gagal beralih kamera:", err));
+            } else {
+                alert("Hanya 1 kamera yang terdeteksi di perangkat ini.");
+            }
+        }
+
+        window.addEventListener('load', startScanner);
     </script>
 </body>
 </html>
