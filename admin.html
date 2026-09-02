@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Admin - Kelola Tugas</title>
+    <style>
+        :root { --primary-blue: #4a76c5; }
+        body { font-family: 'Segoe UI', sans-serif; background: #e9ecef; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 90vh; }
+        .login-card, .admin-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); width: 100%; max-width: 500px; text-align: center; }
+        .admin-card { max-width: 800px; display: none; }
+        h2 { color: var(--primary-blue); margin-bottom: 20px; }
+        input[type="password"] { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        button { background: var(--primary-blue); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
+        button:hover { background: #3b5fa3; }
+        .btn-sheet { background: #28a745; margin-top: 15px; text-decoration: none; display: inline-block; color: white; padding: 12px; border-radius: 8px; font-weight: bold; }
+        .btn-sheet:hover { background: #218838; }
+    </style>
+</head>
+<body>
+
+    <!-- Form Login Admin -->
+    <div id="loginBox" class="login-card">
+        <h2>LOGIN ADMIN</h2>
+        <p>Masukkan Kata Sandi untuk Mengelola Data Tugas</p>
+        <input type="password" id="passInput" placeholder="Masukkan Password...">
+        <button onclick="checkPassword()">MASUK</button>
+    </div>
+
+    <!-- Panel Kontrol Admin -->
+    <div id="adminPanel" class="admin-card">
+        <h2>PANEL KELOLA DATA TUGAS</h2>
+        <p>Klik tombol di bawah ini untuk membuka dan mengedit Google Sheets Database secara langsung:</p>
+        
+        <a href="https://docs.google.com/spreadsheets/d/1Dc7quyO0MrpU8lkVEuwG422_9TiIbyRpWPvWyw8bj-M/edit" target="_blank" class="btn-sheet">
+            &boxbox; Buka Google Sheets Database
+        </a>
+
+        <div style="margin-top: 30px; text-align: left; background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid var(--primary-blue);">
+            <strong>Petunjuk Pengisian Data Tugas:</strong>
+            <ul>
+                <li><strong>Kolom A:</strong> NISN / Kode Barcode</li>
+                <li><strong>Kolom B:</strong> Nama Siswa</li>
+                <li><strong>Kolom C:</strong> Kelas</li>
+                <li><strong>Kolom D:</strong> Daftar Tugas (Gunakan tanda koma <code>,</code> untuk memisahkan tugas)</li>
+            </ul>
+        </div>
+        
+        <br><br>
+        <a href="index.html" style="color: #666; text-decoration: none; font-size: 0.9rem;">&larr; Kembali ke Pemindai Scan</a>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const pass = document.getElementById('passInput').value;
+            // Ubah 'admin123' sesuai dengan kata sandi yang kamu inginkan
+            if (pass === 'admin123') {
+                document.getElementById('loginBox').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+            } else {
+                alert('Password Salah!');
+            }
+        }
+    </script>
+</body>
+</html>
