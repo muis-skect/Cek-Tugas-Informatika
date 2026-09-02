@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Tugas Siswa</title>
+    <title>Data Tugas Siswa - Khusus Admin</title>
     <style>
         :root { --primary-blue: #4a76c5; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 900px; margin: 0 auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', sans-serif; background: #e9ecef; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 90vh; }
+        
+        .login-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); width: 100%; max-width: 400px; text-align: center; }
+        .data-container { display: none; width: 100%; max-width: 900px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        
         h2 { color: var(--primary-blue); text-align: center; margin-bottom: 20px; }
-        .search-box { width: 100%; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; margin-bottom: 20px; }
+        input[type="password"], .search-box { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        
+        button { background: var(--primary-blue); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
+        button:hover { background: #3b5fa3; }
+        
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
         th { background-color: var(--primary-blue); color: white; }
@@ -18,7 +25,19 @@
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <!-- Form Login Password -->
+    <div id="loginBox" class="login-card">
+        <h2>AKSES DATA ADMIN</h2>
+        <p>Masukkan Kata Sandi Admin untuk Melihat Rekap Data Tugas</p>
+        <input type="password" id="passInput" placeholder="Masukkan Password Admin...">
+        <button onclick="checkPassword()">MASUK</button>
+        <br><br>
+        <a href="index.html" style="color: #666; text-decoration: none; font-size: 0.85rem;">&larr; Kembali ke Pemindai Scan</a>
+    </div>
+
+    <!-- Halaman Data (Tersembunyi Sebelum Login) -->
+    <div id="dataPanel" class="data-container">
         <a href="index.html" class="nav-link">&larr; Kembali ke Pemindai Scan</a>
         <h2>REKAP DATA TUGAS SISWA</h2>
         <input type="text" id="searchInput" class="search-box" onkeyup="filterData()" placeholder="Cari Berdasarkan Nama, NISN, atau Kelas...">
@@ -45,22 +64,36 @@
 
         let listSiswa = [];
 
-        fetch(SHEET_URL)
-            .then(res => res.text())
-            .then(data => {
-                const json = JSON.parse(data.substr(47).slice(0, -2));
-                const rows = json.table.rows;
-                listSiswa = rows.map(r => ({
-                    nisn: r.c[0] ? String(r.c[0].v || r.c[0].f).trim() : "",
-                    nama: r.c[1] ? String(r.c[1].v).trim() : "",
-                    kelas: r.c[2] ? String(r.c[2].v).trim() : "",
-                    tugas: r.c[3] ? String(r.c[3].v).trim() : "-"
-                }));
-                renderTable(listSiswa);
-            })
-            .catch(err => {
-                document.getElementById('tableBody').innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Gagal memuat data dari database.</td></tr>';
-            });
+        function checkPassword() {
+            const pass = document.getElementById('passInput').value;
+            // Password default: admin123
+            if (pass === 'admin123') {
+                document.getElementById('loginBox').style.display = 'none';
+                document.getElementById('dataPanel').style.display = 'block';
+                loadData();
+            } else {
+                alert('Password Salah! Hanya Admin yang Diizinkan.');
+            }
+        }
+
+        function loadData() {
+            fetch(SHEET_URL)
+                .then(res => res.text())
+                .then(data => {
+                    const json = JSON.parse(data.substr(47).slice(0, -2));
+                    const rows = json.table.rows;
+                    listSiswa = rows.map(r => ({
+                        nisn: r.c[0] ? String(r.c[0].v || r.c[0].f).trim() : "",
+                        nama: r.c[1] ? String(r.c[1].v).trim() : "",
+                        kelas: r.c[2] ? String(r.c[2].v).trim() : "",
+                        tugas: r.c[3] ? String(r.c[3].v).trim() : "-"
+                    }));
+                    renderTable(listSiswa);
+                })
+                .catch(err => {
+                    document.getElementById('tableBody').innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Gagal memuat data dari database.</td></tr>';
+                });
+        }
 
         function renderTable(data) {
             let html = "";
